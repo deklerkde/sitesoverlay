@@ -146,63 +146,29 @@
     });
 
     // 4. RHS Components - Find all elements preceded by significant HTML comments
-    function findElementsWithComments() {
-        const elementsWithComments = [];
-        let node = document.body.firstChild;
-
-        while (node) {
-            if (node.nodeType === 8) { // Node.COMMENT_NODE
-                const commentText = node.nodeValue.trim();
-                // Look for meaningful comments (exclude short ones, meta comments)
-                if (commentText && commentText.length > 3 &&
-                    !commentText.includes('---') &&
-                    !commentText.toLowerCase().includes('meta') &&
-                    !commentText.toLowerCase().includes('script') &&
-                    !commentText.toLowerCase().includes('tag') &&
-                    !commentText.toLowerCase().includes('html')) {
-
-                    // Find the next element sibling
-                    let nextNode = node.nextSibling;
-                    while (nextNode && nextNode.nodeType !== 1) { // Node.ELEMENT_NODE
-                        nextNode = nextNode.nextSibling;
-                    }
-
-                    if (nextNode && !marked.has(nextNode)) {
-                        elementsWithComments.push({
-                            element: nextNode,
-                            comment: commentText
-                        });
-                    }
-                }
-            }
-            node = node.nextSibling;
-        }
-
-        return elementsWithComments;
-    }
-
-    // Walk the tree recursively to find commented elements throughout the document
+    // Walk the tree to find commented elements throughout the document
     function walkTreeForComments(parentNode, elementsWithComments) {
         let node = parentNode.firstChild;
 
         while (node) {
             if (node.nodeType === 8) { // Node.COMMENT_NODE
                 const commentText = node.nodeValue.trim();
-                // Look for meaningful comments
+                // Look for meaningful comments (exclude very short ones and system comments)
                 if (commentText && commentText.length > 3 &&
                     !commentText.includes('---') &&
-                    !commentText.toLowerCase().includes('meta') &&
-                    !commentText.toLowerCase().includes('script') &&
-                    !commentText.toLowerCase().includes('tag') &&
-                    !commentText.toLowerCase().includes('html')) {
+                    !commentText.toLowerCase().includes('google tag manager') &&
+                    !commentText.toLowerCase().includes('end google') &&
+                    !commentText.toLowerCase().includes('dwc') &&
+                    !commentText.toLowerCase().startsWith('adslot')) {
 
-                    // Find the next element sibling
+                    // Find the next element sibling (skip text nodes)
                     let nextNode = node.nextSibling;
                     while (nextNode && nextNode.nodeType !== 1) { // Node.ELEMENT_NODE
                         nextNode = nextNode.nextSibling;
                     }
 
-                    if (nextNode && !marked.has(nextNode) && nextNode.offsetHeight > 0) {
+                    // Add element if it exists and isn't already marked
+                    if (nextNode && !marked.has(nextNode)) {
                         elementsWithComments.push({
                             element: nextNode,
                             comment: commentText
@@ -227,8 +193,12 @@
     // Create overlays for comment-preceded elements
     commentedElements.forEach(function (item) {
         if (!marked.has(item.element)) {
-            createGhost(item.element, item.comment, '#00cc66', 'solid', 'data-overlay-widgets');
-            marked.add(item.element);
+            // Only create overlay if element is visible
+            const rect = item.element.getBoundingClientRect();
+            if (rect.width > 0 || rect.height > 0) {
+                createGhost(item.element, item.comment, '#00cc66', 'solid', 'data-overlay-widgets');
+                marked.add(item.element);
+            }
         }
     });
 
