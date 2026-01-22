@@ -64,11 +64,17 @@
         ghost.appendChild(labelDiv);
         stage.appendChild(ghost);
 
+        // Store the element-ghost relationship
+        elementToGhost.set(el, ghost);
+
         return ghost;
     }
 
     // Track what we've already marked to avoid duplicates
     const marked = new Set();
+
+    // Map to store element-to-ghost relationships for updating
+    const elementToGhost = new Map();
 
     // 1. Major Layout Sections
     const layoutSections = [
@@ -374,56 +380,58 @@
             document.documentElement.offsetHeight
         ) + 'px';
     }
+Function to recalculate all overlay positions
+    function recalculatePositions() {
+        elementToGhost.forEach(function (ghost, element) {
+            if (!ghost.parentNode) return; // Ghost was removed
 
-    updateStageHeight();
+            const rect = element.getBoundingClientRect();
+            if (rect.width === 0 && rect.height === 0) return; // Element not visible
 
-    // Recalculate overlay positions after images and ads load
-    setTimeout(function () {
-        // Update all ghost positions
-        const ghosts = stage.querySelectorAll('div[data-overlay-layout], div[data-overlay-article], div[data-overlay-cards], div[data-overlay-widgets], div[data-overlay-ads]');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
-        ghosts.forEach(function (ghost) {
-            // Find the original element by comparing stored data
-            const originalLabel = ghost.querySelector('div').innerText;
-
-            // Skip if already removed
-            if (!ghost.parentNode) return;
-
-            // Get all elements and find the matching one
-            let foundElement = null;
-            marked.forEach(function (el) {
-                const rect = el.getBoundingClientRect();
-                if (rect.width > 0 && rect.height > 0) {
-                    const currentTop = parseFloat(ghost.style.top);
-                    const currentLeft = parseFloat(ghost.style.left);
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-                    const elTop = rect.top + scrollTop;
-                    const elLeft = rect.left + scrollLeft;
-
-                    // Check if this is roughly the same element (within 50px tolerance)
-                    if (Math.abs(currentTop - elTop) < 50 && Math.abs(currentLeft - elLeft) < 50) {
-                        foundElement = el;
-                    }
-                }
-            });
-
-            if (foundElement) {
-                const rect = foundElement.getBoundingClientRect();
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-                ghost.style.top = (rect.top + scrollTop) + 'px';
-                ghost.style.left = (rect.left + scrollLeft) + 'px';
-                ghost.style.width = rect.width + 'px';
-                ghost.style.height = rect.height + 'px';
-            }
+            ghost.style.top = (rect.top + scrollTop) + 'px';
+            ghost.style.left = (rect.left + scrollLeft) + 'px';
+            ghost.style.width = rect.width + 'px';
+            ghost.style.height = rect.height + 'px';
         });
 
         updateStageHeight();
-        console.log('🔄 Overlay positions recalculated');
-    }, 500);
+    }
 
-    console.log('✅ Component overlays created successfully');
-    console.log('📊 Components marked: ' + marked.size);
-})();
+    // Recalculate overlay positions after initial load
+    setTimeout(recalculatePositions, 500);
+    setTimeout(recalculatePositions, 1500);
+    setTimeout(recalculatePositions, 3000);
+
+    // Watch for DOM changes (like lazy-loaded ads)
+    const observer = new MutationObserver(function (mutations) {
+        let shouldRecalculate = false;
+
+        mutations.forEach(function (mutation) {
+            // Check if nodes were added or attributes changed
+            if (mutation.addedNodes.length > 0 || mutation.type === 'attributes') {
+                shouldRecalculate = true;
+            }
+        });
+
+        if (shouldRecalculate) {
+            recalculatePositions();
+        }
+    });
+
+    // Observe the entire document for changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class']
+    }
+        updateStageHeight();
+    console.log('🔄 Overlay positions recalculated');
+}, 500);
+
+console.log('✅ Component overlays created successfully');
+console.log('📊 Components marked: ' + marked.size);
+}) ();
