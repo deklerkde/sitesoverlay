@@ -82,7 +82,8 @@
     // 2. Article Containers with HTML comment names
     const articleContainers = [
         { selector: '.in-focus', label: 'In Focus Widget', color: '#0099ff' },
-        { selector: '.featured', label: 'Featured Article', color: '#0099ff' }
+        { selector: '.featured', label: 'Featured Article', color: '#0099ff' },
+        { selector: '.columnists', label: 'Columnist Block', color: '#0099ff' }
     ];
 
     articleContainers.forEach(function (item) {
@@ -97,6 +98,14 @@
                         if (commentText && commentText.length > 3 && !commentText.includes('---')) {
                             commentLabel = commentText;
                             break;
+                        }
+                    }
+                    // Also check through link/script tags
+                    if (node.nodeType === 1) {
+                        const tagName = node.tagName.toLowerCase();
+                        if (tagName === 'link' || tagName === 'script' || tagName === 'style') {
+                            node = node.previousSibling;
+                            continue;
                         }
                     }
                     node = node.previousSibling;
@@ -160,12 +169,15 @@
                     !commentText.includes('---') &&
                     !lowerComment.includes('google tag manager') &&
                     !lowerComment.includes('end google') &&
+                    !lowerComment.includes('company snapshot end') &&
                     !lowerComment.startsWith('adslot') &&
                     !commentText.startsWith('/') &&
                     !commentText.endsWith('.dwc') &&
-                    !lowerComment.includes('.dwc ') &&
+                    !lowerComment.includes('.dwc') &&
                     !lowerComment.includes('small thumb') &&
-                    !lowerComment.includes('medium thumb')) {
+                    !lowerComment.includes('medium thumb') &&
+                    lowerComment !== 'rhs footer' &&
+                    lowerComment !== 'lhs footer') {
 
                     // Find the next meaningful element sibling (skip text nodes, link tags, script tags)
                     let nextNode = node.nextSibling;
