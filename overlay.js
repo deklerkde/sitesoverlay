@@ -158,7 +158,6 @@
                     !commentText.includes('---') &&
                     !commentText.toLowerCase().includes('google tag manager') &&
                     !commentText.toLowerCase().includes('end google') &&
-                    !commentText.toLowerCase().includes('dwc') &&
                     !commentText.toLowerCase().startsWith('adslot')) {
 
                     // Find the next element sibling (skip text nodes)
@@ -202,13 +201,18 @@
         }
     });
 
-    // 4b. Also include specific RHS widget selectors as fallback
+    // 4b. RHS widget class selectors - comprehensive coverage
     const rhsComponents = [
         { selector: '.most-read-widget', label: 'Most Read Widget', color: '#00cc66' },
         { selector: '.vote-widget', label: 'Vote Widget', color: '#00cc66' },
         { selector: '.newsletter-subscription', label: 'Newsletter Subscription', color: '#00cc66' },
         { selector: '.traffic-widget', label: 'Traffic Widget', color: '#00cc66' },
-        { selector: '.site-search-query', label: 'Search Widget', color: '#00cc66' }
+        { selector: '.site-search-query', label: 'Search Widget', color: '#00cc66' },
+        { selector: '.image-carousel', label: 'Image Carousel Widget', color: '#00cc66' },
+        { selector: '.podcasts-widget', label: 'Podcasts Widget', color: '#00cc66' },
+        { selector: '.company-snapshot-widget', label: 'Company Snapshot', color: '#00cc66' },
+        { selector: '.weather-widget', label: 'Weather Widget', color: '#00cc66' },
+        { selector: '.lotto', label: 'Lotto Widget', color: '#00cc66' }
     ];
 
     rhsComponents.forEach(function (item) {
