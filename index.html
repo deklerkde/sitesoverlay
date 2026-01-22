@@ -26,21 +26,33 @@
             color: #666;
             margin-bottom: 30px;
         }
+        .bookmarklet-box {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+        }
         .bookmarklet {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #667eea;
             padding: 15px 30px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .bookmarklet:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+        .bookmarklet-instructions {
+            color: white;
+            margin-top: 15px;
+            font-size: 14px;
         }
         .instructions {
             background: #f8f9fa;
@@ -60,6 +72,18 @@
         .instructions li {
             margin: 10px 0;
             line-height: 1.6;
+        }
+        .instructions ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        kbd {
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 0.9em;
         }
         .features {
             display: grid;
@@ -94,6 +118,17 @@
             border-left: 4px solid #ffc107;
             color: #856404;
         }
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -101,12 +136,12 @@
         <h1>📐 Component Overlay Tool</h1>
         <p class="subtitle">Visualize your page structure with interactive overlays</p>
         
-        <div style="text-align: center; margin: 40px 0;">
-            <a href="javascript:(function()%7B(function()%7Bconst%20oldStage%3Ddocument.getElementById('ds-ghost-stage')%3BoldStage%26%26oldStage.remove()%3Bconst%20stage%3Ddocument.createElement('div')%3Bstage.id%3D'ds-ghost-stage'%2CObject.assign(stage.style%2C%7Bposition%3A'absolute'%2Ctop%3A'0'%2Cleft%3A'0'%2Cwidth%3A'100%25'%2Cheight%3Adocument.body.scrollHeight%2B'px'%2CpointerEvents%3A'none'%2CzIndex%3A'999999'%7D)%2Cdocument.body.appendChild(stage)%3Bfunction%20createGhost(e%2Ct%2Co%2Cr%3D'solid'%2Cl%3D'')%7Bconst%20a%3De.getBoundingClientRect()%3Bif(0!%3D%3Da.width%7C%7C0!%3D%3Da.height)%7Bconst%20e%3Ddocument.createElement('div')%3Bl%26%26e.setAttribute(l%2C'true')%2CObject.assign(e.style%2C%7Bposition%3A'absolute'%2Ctop%3Aa.top%2Bwindow.scrollY%2B'px'%2Cleft%3Aa.left%2Bwindow.scrollX%2B'px'%2Cwidth%3Aa.width%2B'px'%2Cheight%3Aa.height%2B'px'%2Cborder%3A%603px%20%24%7Br%7D%20%24%7Bo%7D%60%2CbackgroundColor%3A%60%24%7Bo%7D18%60%2CboxSizing%3A'border-box'%2CzIndex%3A'100'%7D)%3Bconst%20s%3Ddocument.createElement('div')%3Bs.innerText%3Dt%2CObject.assign(s.style%2C%7Bposition%3A'absolute'%2Ctop%3A'-22px'%2Cleft%3A'0'%2Cbackground%3Ao%2Ccolor%3A'%23fff'%2CfontSize%3A'12px'%2CfontWeight%3A'bold'%2Cpadding%3A'4px%208px'%2CwhiteSpace%3A'nowrap'%2CborderRadius%3A'3px'%7D)%2Ce.appendChild(s)%2Cstage.appendChild(e)%7D%7Dconst%20marked%3Dnew%20Set%3B%5B%7Bselector%3A'.tf-lhs-col'%2Clabel%3A'LHS%20Column'%2Ccolor%3A'%23ff0055'%7D%2C%7Bselector%3A'.tf-rhs-col'%2Clabel%3A'RHS%20Column'%2Ccolor%3A'%23ff6600'%7D%2C%7Bselector%3A'.header'%2Clabel%3A'Header'%2Ccolor%3A'%239933ff'%7D%2C%7Bselector%3A'.footer'%2Clabel%3A'Footer'%2Ccolor%3A'%23666666'%7D%5D.forEach((%7Bselector%3Ae%2Clabel%3At%2Ccolor%3Ao%7D)%3D%3E%7Bconst%20r%3Ddocument.querySelector(e)%3Br%26%26!marked.has(r)%26%26(createGhost(r%2Ct%2Co%2C'solid'%2C'data-overlay-layout')%2Cmarked.add(r))%7D)%2C%5B%7Bselector%3A'.in-focus'%2Clabel%3A'In%20Focus%20Widget'%2Ccolor%3A'%230099ff'%7D%2C%7Bselector%3A'.featured'%2Clabel%3A'Featured%20Article'%2Ccolor%3A'%230099ff'%7D%5D.forEach((%7Bselector%3Ae%2Clabel%3At%2Ccolor%3Ao%7D)%3D%3E%7Bdocument.querySelectorAll(e).forEach(e%3D%3E%7Bif(!marked.has(e))%7Blet%20r%3Dt%2Cl%3De.previousSibling%3Bfor(%3Bl%3B)%7Bif(l.nodeType%3D%3D%3DNode.COMMENT_NODE)%7Bconst%20e%3Dl.nodeValue.trim()%3Bif(e%26%26e.length%3E3%26%26!e.includes('---'))%7Br%3De%3Bbreak%7D%7Dl%3Dl.previousSibling%7DcreateGhost(e%2Cr%2Co%2C'solid'%2C'data-overlay-article')%2Cmarked.add(e)%7D%7D)%7D)%2Cdocument.querySelectorAll('.article-list--container').forEach(e%3D%3E%7Bif(!marked.has(e))%7Blet%20t%3D'Article%20List%20Container'%2Co%3De.previousSibling%3Bfor(%3Bo%3B)%7Bif(o.nodeType%3D%3D%3DNode.COMMENT_NODE)%7Bconst%20e%3Do.nodeValue.trim()%3Bif(e%26%26e.length%3E3%26%26!e.includes('---'))%7Bt%3De%3Bbreak%7D%7Do%3Do.previousSibling%7DcreateGhost(e%2Ct%2C'%230066cc'%2C'solid'%2C'data-overlay-article')%2Cmarked.add(e)%7D%7D)%2C%5B%7Bselector%3A'.article-item.thumb--small'%2Clabel%3A'Small%20Thumb%20Card'%2Ccolor%3A'%2333ccff'%7D%2C%7Bselector%3A'.article-item.thumb--medium'%2Clabel%3A'Medium%20Thumb%20Card'%2Ccolor%3A'%2333aaff'%7D%5D.forEach((%7Bselector%3Ae%2Clabel%3Ct%2Ccolor%3Ao%7D)%3D%3E%7Bdocument.querySelectorAll(e).forEach((e%2Cr)%3D%3E%7Br%3C3%26%26!marked.has(e)%26%26(createGhost(e%2C%60%24%7Bt%7D%20(example)%60%2Co%2C'dashed'%2C'data-overlay-cards')%2Cmarked.add(e))%7D)%7D)%2C%5B%7Bselector%3A'.most-read-widget'%2Clabel%3A'Most%20Read%20Widget'%2Ccolor%3A'%2300cc66'%7D%2C%7Bselector%3A'.podcasts-widget'%2Clabel%3A'Podcasts%20Widget'%2Ccolor%3A'%2300cc66'%7D%2C%7Bselector%3A'.vote-widget'%2Clabel%3A'Vote%20Widget'%2Ccolor%3A'%2300cc66'%7D%2C%7Bselector%3A'.lotto'%2Clabel%3A'Lotto%20Widget'%2Ccolor%3A'%2300cc66'%7D%2C%7Bselector%3A'.traffic-widget'%2Clabel%3A'Traffic%20Widget'%2Ccolor%3A'%2300cc66'%7D%2C%7Bselector%3A'.site-search-query'%2Clabel%3A'Search%20Widget'%2Ccolor%3A'%2300cc66'%7D%5D.forEach((%7Bselector%3Ae%2Clabel%3At%2Ccolor%3Ao%7D)%3D%3E%7Bdocument.querySelectorAll(e).forEach((r%2Cl)%3D%3E%7Bif(!marked.has(r))%7Bconst%20a%3Ddocument.querySelectorAll(e).length%3E1%3F%60%24%7Bt%7D%20%24%7Bl%2B1%7D%60%3At%3BcreateGhost(r%2Ca%2Co%2C'solid'%2C'data-overlay-widgets')%2Cmarked.add(r)%7D%7D)%7D)%3Bconst%20adContainers%3Ddocument.querySelectorAll('%5Bdata-adname%5D')%2CadTypes%3D%7B%7D%3BadContainers.forEach(e%3D%3E%7Bconst%20t%3De.getAttribute('data-adname')%3BadTypes%5Bt%5D%7C%7C(adTypes%5Bt%5D%3D%5B%5D)%2CadTypes%5Bt%5D.push(e)%7D)%2CObject.entries(adTypes).forEach((%5Be%2Ct%5D)%3D%3E%7Bt.forEach((t%2Co)%3D%3E%7Bif(!marked.has(t))%7Bconst%20r%3D1%3Ct.length%3F%60AD%3A%20%24%7Be%7D%20%24%7Bo%2B1%7D%60%3A%60AD%3A%20%24%7Be%7D%60%3BcreateGhost(t%2Cr%2C'%23bc13fe'%2C'solid'%2C'data-overlay-ads')%2Cmarked.add(t)%7D%7D)%7D)%3Bconst%20legend%3Ddocument.createElement('div')%3BObject.assign(legend.style%2C%7Bposition%3A'fixed'%2Ctop%3A'10px'%2Cright%3A'10px'%2Cbackground%3A'rgba(0%2C0%2C0%2C0.92)'%2Ccolor%3A'%23fff'%2Cpadding%3A'12px'%2CfontSize%3A'12px'%2CzIndex%3A'1000000'%2CborderRadius%3A'6px'%2CmaxWidth%3A'240px'%2CboxShadow%3A'0%204px%2012px%20rgba(0%2C0%2C0%2C0.5)'%7D)%3Bconst%20overlayTypes%3D%5B%7Bid%3A'layout'%2Clabel%3A'Layout%20Sections'%2Ccolor%3A'%23ff0055'%2Cattr%3A'data-overlay-layout'%7D%2C%7Bid%3A'articles'%2Clabel%3A'Article%20Containers'%2Ccolor%3A'%230066cc'%2Cattr%3A'data-overlay-article'%7D%2C%7Bid%3A'cards'%2Clabel%3A'Card%20Examples'%2Ccolor%3A'%2333ccff'%2Cattr%3A'data-overlay-cards'%7D%2C%7Bid%3A'widgets'%2Clabel%3A'RHS%20Widgets'%2Ccolor%3A'%2300cc66'%2Cattr%3A'data-overlay-widgets'%7D%2C%7Bid%3A'ads'%2Clabel%3A'Ad%20Slots'%2Ccolor%3A'%23bc13fe'%2Cattr%3A'data-overlay-ads'%7D%5D%3Blegend.innerHTML%3D%60%0A%20%20%20%20%20%20%20%20%3Cdiv%20style%3D%22font-weight%3A%20bold%3B%20margin-bottom%3A%2010px%3B%20font-size%3A%2013px%3B%22%3EComponent%20Overview%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%20%24%7BoverlayTypes.map(e%3D%3E%60%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Clabel%20style%3D%22display%3A%20flex%3B%20align-items%3A%20center%3B%20margin%3A%208px%200%3B%20cursor%3A%20pointer%3B%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cinput%20type%3D%22checkbox%22%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%3D%22toggle-%24%7Be.id%7D%22%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20data-overlay-type%3D%22%24%7Be.attr%7D%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20checked%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20style%3D%22margin-right%3A%208px%3B%20cursor%3A%20pointer%3B%20width%3A%2014px%3B%20height%3A%2014px%3B%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cspan%20style%3D%22color%3A%20%24%7Be.color%7D%3B%20margin-right%3A%208px%3B%20font-size%3A%2016px%3B%22%3E%E2%96%A0%3C%2Fspan%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cspan%20style%3D%22font-size%3A%2011px%3B%22%3E%24%7Be.label%7D%3C%2Fspan%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Flabel%3E%0A%20%20%20%20%20%20%20%20%60).join('')%7D%0A%20%20%20%20%20%20%20%20%3Cdiv%20style%3D%22margin-top%3A%2012px%3B%20padding-top%3A%2012px%3B%20border-top%3A%201px%20solid%20%23666%3B%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22toggle-all-btn%22%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20style%3D%22width%3A%20100%25%3B%20padding%3A%206px%3B%20cursor%3A%20pointer%3B%20margin-bottom%3A%206px%3B%20border-radius%3A%203px%3B%20border%3A%20none%3B%20background%3A%20%23444%3B%20color%3A%20%23fff%3B%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Toggle%20All%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fbutton%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22remove-overlays-btn%22%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20style%3D%22width%3A%20100%25%3B%20padding%3A%206px%3B%20cursor%3A%20pointer%3B%20border-radius%3A%203px%3B%20border%3A%20none%3B%20background%3A%20%23d32f2f%3B%20color%3A%20%23fff%3B%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Remove%20Overlays%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fbutton%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%60%2Cdocument.body.appendChild(legend)%2CoverlayTypes.forEach(e%3D%3E%7Bdocument.getElementById(%60toggle-%24%7Be.id%7D%60).addEventListener('change'%2Ct%3D%3E%7Bstage.querySelectorAll(%60%5B%24%7Be.attr%7D%5D%60).forEach(e%3D%3E%7Be.style.display%3Dt.target.checked%3F'block'%3A'none'%7D)%7D)%7D)%2Cdocument.getElementById('remove-overlays-btn').addEventListener('click'%2C()%3D%3E%7Bstage.remove()%2Clegend.remove()%7D)%2Cdocument.getElementById('toggle-all-btn').addEventListener('click'%2C()%3D%3E%7Bconst%20e%3Dlegend.querySelectorAll('input%5Btype%3D%22checkbox%22%5D')%2Ct%3DArray.from(e).every(e%3D%3Ee.checked)%3Be.forEach(e%3D%3E%7Be.checked%3D!t%2Ce.dispatchEvent(new%20Event('change'))%7D)%7D)%2Cconsole.log('%E2%9C%85%20High-level%20component%20overlays%20created%20successfully')%2Cconsole.log(%60%F0%9F%93%8A%20Components%20marked%3A%20%24%7Bmarked.size%7D%60)%7D)()%7D)()" class="bookmarklet">
+        <div class="bookmarklet-box">
+            <a href='javascript:(function(){var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/gh/yourusername/component-overlay/overlay.js";document.head.appendChild(s);})();' class="bookmarklet" id="bookmarklet-link">
                 📐 Component Overlay Tool
             </a>
-            <p style="margin-top: 15px; color: #666; font-size: 14px;">
-                ← Drag this button to your bookmarks bar
+            <p class="bookmarklet-instructions">
+                ⬆️ Drag this button to your bookmarks bar
             </p>
         </div>
 
@@ -125,6 +160,24 @@
                 <li><strong>Click the bookmarklet</strong> in your bookmarks bar</li>
                 <li><strong>See the overlays</strong> appear with a control panel in the top-right</li>
             </ol>
+        </div>
+
+        <div class="note">
+            <strong>⚠️ Setup Required:</strong> This bookmarklet loads from a CDN. You need to:
+            <ol style="margin: 10px 0; padding-left: 20px;">
+                <li>Host the overlay.js file on GitHub</li>
+                <li>Update the URL in the bookmarklet above</li>
+                <li>OR use the standalone version below</li>
+            </ol>
+        </div>
+
+        <h3>Alternative: Self-Contained Bookmarklet</h3>
+        <p>Copy this code and manually create a bookmark with it (no external hosting needed):</p>
+        
+        <div class="code-box" id="standalone-code">
+            <button onclick="copyStandaloneCode()" style="float: right; padding: 5px 10px; cursor: pointer;">Copy</button>
+            <div style="clear: both;"></div>
+            Loading...
         </div>
 
         <div class="features">
@@ -151,8 +204,25 @@
         </div>
 
         <div class="note">
-            <strong>💡 Pro Tip:</strong> You can also copy the bookmarklet link and manually create a bookmark with it. Just right-click your bookmarks bar, select "Add page" or "Add bookmark", and paste the entire javascript: URL.
+            <strong>💡 Manual Installation:</strong> Right-click your bookmarks bar → "Add page/bookmark" → Paste the code above as the URL
         </div>
     </div>
+
+    <script>
+        // Generate the standalone bookmarklet code
+        const standaloneCode = `javascript:(function(){const o=document.getElementById('ds-ghost-stage');o&&o.remove();const e=document.createElement('div');e.id='ds-ghost-stage',Object.assign(e.style,{position:'absolute',top:'0',left:'0',width:'100%',height:document.body.scrollHeight+'px',pointerEvents:'none',zIndex:'999999'}),document.body.appendChild(e);function t(o,t,l,a='solid',r=''){const n=o.getBoundingClientRect();if(0===n.width&&0===n.height)return;const d=document.createElement('div');r&&d.setAttribute(r,'true'),Object.assign(d.style,{position:'absolute',top:n.top+window.scrollY+'px',left:n.left+window.scrollX+'px',width:n.width+'px',height:n.height+'px',border:\`3px \${a} \${l}\`,backgroundColor:\`\${l}18\`,boxSizing:'border-box',zIndex:'100'});const s=document.createElement('div');s.innerText=t,Object.assign(s.style,{position:'absolute',top:'-22px',left:'0',background:l,color:'#fff',fontSize:'12px',fontWeight:'bold',padding:'4px 8px',whiteSpace:'nowrap',borderRadius:'3px'}),d.appendChild(s),e.appendChild(d)}const l=new Set;[{selector:'.tf-lhs-col',label:'LHS Column',color:'#ff0055'},{selector:'.tf-rhs-col',label:'RHS Column',color:'#ff6600'},{selector:'.header',label:'Header',color:'#9933ff'},{selector:'.footer',label:'Footer',color:'#666666'}].forEach(({selector:o,label:e,color:a})=>{const r=document.querySelector(o);r&&!l.has(r)&&(t(r,e,a,'solid','data-overlay-layout'),l.add(r))}),document.querySelectorAll('.article-list--container').forEach(o=>{if(!l.has(o)){let e='Article List Container',a=o.previousSibling;for(;a;){if(a.nodeType===Node.COMMENT_NODE){const o=a.nodeValue.trim();if(o&&o.length>3&&!o.includes('---')){e=o;break}}a=a.previousSibling}t(o,e,'#0066cc','solid','data-overlay-article'),l.add(o)}}),document.querySelectorAll('[data-adname]').forEach(o=>{if(!l.has(o)){const e=o.getAttribute('data-adname');t(o,\`AD: \${e}\`,'#bc13fe','solid','data-overlay-ads'),l.add(o)}});const a=document.createElement('div');Object.assign(a.style,{position:'fixed',top:'10px',right:'10px',background:'rgba(0,0,0,0.92)',color:'#fff',padding:'12px',fontSize:'12px',zIndex:'1000000',borderRadius:'6px',maxWidth:'240px',boxShadow:'0 4px 12px rgba(0,0,0,0.5)'});const r=[{id:'layout',label:'Layout Sections',color:'#ff0055',attr:'data-overlay-layout'},{id:'articles',label:'Article Containers',color:'#0066cc',attr:'data-overlay-article'},{id:'ads',label:'Ad Slots',color:'#bc13fe',attr:'data-overlay-ads'}];a.innerHTML=\`<div style="font-weight:bold;margin-bottom:10px;font-size:13px">Component Overview</div>\${r.map(o=>\`<label style="display:flex;align-items:center;margin:8px 0;cursor:pointer"><input type="checkbox" id="toggle-\${o.id}" data-overlay-type="\${o.attr}" checked style="margin-right:8px;cursor:pointer;width:14px;height:14px"><span style="color:\${o.color};margin-right:8px;font-size:16px">■</span><span style="font-size:11px">\${o.label}</span></label>\`).join('')}<div style="margin-top:12px;padding-top:12px;border-top:1px solid #666"><button id="toggle-all-btn" style="width:100%;padding:6px;cursor:pointer;margin-bottom:6px;border-radius:3px;border:none;background:#444;color:#fff">Toggle All</button><button id="remove-overlays-btn" style="width:100%;padding:6px;cursor:pointer;border-radius:3px;border:none;background:#d32f2f;color:#fff">Remove Overlays</button></div>\`,document.body.appendChild(a),r.forEach(o=>{document.getElementById(\`toggle-\${o.id}\`).addEventListener('change',t=>{e.querySelectorAll(\`[\${o.attr}]\`).forEach(o=>{o.style.display=t.target.checked?'block':'none'})})}),document.getElementById('remove-overlays-btn').addEventListener('click',()=>{e.remove(),a.remove()}),document.getElementById('toggle-all-btn').addEventListener('click',()=>{const o=a.querySelectorAll('input[type="checkbox"]'),e=Array.from(o).every(o=>o.checked);o.forEach(o=>{o.checked=!e,o.dispatchEvent(new Event('change'))})})})();`;
+
+        document.getElementById('standalone-code').innerHTML = `
+            <button onclick="copyStandaloneCode()" style="float: right; padding: 5px 10px; cursor: pointer; background: #667eea; color: white; border: none; border-radius: 4px;">Copy</button>
+            <div style="clear: both; margin-bottom: 10px;"></div>
+            ${standaloneCode}
+        `;
+
+        function copyStandaloneCode() {
+            navigator.clipboard.writeText(standaloneCode).then(() => {
+                alert('Bookmarklet code copied! Now:\n1. Right-click your bookmarks bar\n2. Select "Add page" or "Add bookmark"\n3. Paste this as the URL\n4. Give it a name like "Component Overlay"');
+            });
+        }
+    </script>
 </body>
 </html>
