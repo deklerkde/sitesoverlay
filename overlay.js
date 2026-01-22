@@ -380,7 +380,8 @@
             document.documentElement.offsetHeight
         ) + 'px';
     }
-Function to recalculate all overlay positions
+
+    // Function to recalculate all overlay positions
     function recalculatePositions() {
         elementToGhost.forEach(function (ghost, element) {
             if (!ghost.parentNode) return; // Ghost was removed
@@ -400,10 +401,18 @@ Function to recalculate all overlay positions
         updateStageHeight();
     }
 
+    // Debounced recalculation to avoid excessive updates
+    let recalcTimer = null;
+    function debouncedRecalculate() {
+        if (recalcTimer) clearTimeout(recalcTimer);
+        recalcTimer = setTimeout(recalculatePositions, 100);
+    }
+
     // Recalculate overlay positions after initial load
     setTimeout(recalculatePositions, 500);
     setTimeout(recalculatePositions, 1500);
     setTimeout(recalculatePositions, 3000);
+    setTimeout(recalculatePositions, 5000);
 
     // Watch for DOM changes (like lazy-loaded ads)
     const observer = new MutationObserver(function (mutations) {
@@ -417,7 +426,7 @@ Function to recalculate all overlay positions
         });
 
         if (shouldRecalculate) {
-            recalculatePositions();
+            debouncedRecalculate();
         }
     });
 
@@ -427,11 +436,25 @@ Function to recalculate all overlay positions
         subtree: true,
         attributes: true,
         attributeFilter: ['style', 'class']
-    }
-        updateStageHeight();
-    console.log('🔄 Overlay positions recalculated');
-}, 500);
+    });
 
-console.log('✅ Component overlays created successfully');
-console.log('📊 Components marked: ' + marked.size);
-}) ();
+    // Also observe resize events
+    window.addEventListener('resize', debouncedRecalculate);
+
+    // Intersection Observer for ads loading into view
+    const ioObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                debouncedRecalculate();
+            }
+        });
+    });
+
+    // Observe all ad containers
+    document.querySelectorAll('[data-adname]').forEach(function (ad) {
+        ioObserver.observe(ad);
+    });
+
+    console.log('✅ Component overlays created successfully');
+    console.log('📊 Components marked: ' + marked.size);
+})();
