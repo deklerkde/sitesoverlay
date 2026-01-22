@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,20 +13,24 @@
             padding: 20px;
             background: #f5f5f5;
         }
+
         .container {
             background: white;
             padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             color: #333;
             margin-bottom: 10px;
         }
+
         .subtitle {
             color: #666;
             margin-bottom: 30px;
         }
+
         .bookmarklet-box {
             text-align: center;
             margin: 40px 0;
@@ -33,6 +38,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 12px;
         }
+
         .bookmarklet {
             display: inline-block;
             background: white;
@@ -45,15 +51,18 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .bookmarklet:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
         }
+
         .bookmarklet-instructions {
             color: white;
             margin-top: 15px;
             font-size: 14px;
         }
+
         .instructions {
             background: #f8f9fa;
             padding: 20px;
@@ -61,22 +70,27 @@
             margin: 30px 0;
             border-left: 4px solid #667eea;
         }
+
         .instructions h3 {
             margin-top: 0;
             color: #333;
         }
+
         .instructions ol {
             margin: 15px 0;
             padding-left: 20px;
         }
+
         .instructions li {
             margin: 10px 0;
             line-height: 1.6;
         }
+
         .instructions ul {
             margin: 5px 0;
             padding-left: 20px;
         }
+
         kbd {
             background: #eee;
             border: 1px solid #ccc;
@@ -85,31 +99,37 @@
             font-family: monospace;
             font-size: 0.9em;
         }
+
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin: 30px 0;
         }
+
         .feature {
             padding: 15px;
             background: #f8f9fa;
             border-radius: 6px;
             text-align: center;
         }
+
         .feature-icon {
             font-size: 32px;
             margin-bottom: 10px;
         }
+
         .feature-title {
             font-weight: bold;
             color: #333;
             margin-bottom: 5px;
         }
+
         .feature-desc {
             font-size: 13px;
             color: #666;
         }
+
         .note {
             background: #fff3cd;
             padding: 15px;
@@ -118,6 +138,7 @@
             border-left: 4px solid #ffc107;
             color: #856404;
         }
+
         .code-box {
             background: #f4f4f4;
             border: 1px solid #ddd;
@@ -131,34 +152,58 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>📐 Component Overlay Tool</h1>
         <p class="subtitle">Visualize your page structure with interactive overlays</p>
-        
+
         <div class="bookmarklet-box">
-            <a href='javascript:(function(){var s=document.createElement("script");s.src="https://deklerkde.github.io/sitesoverlay/overlay.js";document.head.appendChild(s);})();' class="bookmarklet" id="bookmarklet-link">
+            <a href='javascript:(function(){var s=document.createElement("script");s.src="https://deklerkde.github.io/sitesoverlay/overlay.js";document.head.appendChild(s);})();'
+                class="bookmarklet" id="bookmarklet-link"
+                onclick="alert('⚠️ Don\'t click! Drag this link to your bookmarks bar instead.\n\nFor Safari: See manual installation instructions below.'); return false;">
                 📐 Component Overlay Tool
             </a>
             <p class="bookmarklet-instructions">
-                ⬆️ Drag this button to your bookmarks bar
+                ⬆️ Drag this button to your bookmarks bar<br>
+                <span style="font-size: 12px; opacity: 0.9;">🍎 Safari users: See manual installation below</span>
             </p>
         </div>
 
         <div class="instructions">
             <h3>🚀 How to Install</h3>
+
+            <h4 style="color: #667eea; margin-top: 20px;">Chrome / Edge / Firefox</h4>
             <ol>
                 <li><strong>Show your bookmarks bar</strong>
                     <ul>
                         <li>Chrome/Edge: Press <kbd>Ctrl+Shift+B</kbd> (Windows) or <kbd>Cmd+Shift+B</kbd> (Mac)</li>
                         <li>Firefox: Press <kbd>Ctrl+B</kbd> (Windows) or <kbd>Cmd+B</kbd> (Mac)</li>
-                        <li>Safari: Go to View → Show Favorites Bar</li>
                     </ul>
                 </li>
                 <li><strong>Drag the button above</strong> to your bookmarks bar</li>
                 <li><strong>Navigate to any webpage</strong> you want to analyze</li>
                 <li><strong>Click the bookmarklet</strong> in your bookmarks bar</li>
-                <li><strong>See the overlays</strong> appear with a control panel in the top-right</li>
+            </ol>
+
+            <h4 style="color: #667eea; margin-top: 20px;">🍎 Safari (Mac)</h4>
+            <p style="background: #fff3cd; padding: 10px; border-radius: 4px; margin: 10px 0;">Safari doesn't support
+                dragging JavaScript bookmarklets. Use manual installation instead:</p>
+            <ol>
+                <li><strong>Show Favorites Bar:</strong> Go to View → Show Favorites Bar (or press
+                    <kbd>Cmd+Shift+B</kbd>)</li>
+                <li><strong>Copy the code below</strong> (click the Copy button in the "Self-Contained Bookmarklet"
+                    section)</li>
+                <li><strong>Right-click</strong> (or Control+click) your Favorites Bar</li>
+                <li><strong>Select "Add Bookmark..."</strong></li>
+                <li><strong>In the dialog:</strong>
+                    <ul>
+                        <li>Name it: <code>Component Overlay</code></li>
+                        <li>Delete the existing URL and paste the copied JavaScript code</li>
+                    </ul>
+                </li>
+                <li><strong>Click "Add"</strong></li>
+                <li><strong>Use it:</strong> Navigate to any webpage and click the bookmark</li>
             </ol>
         </div>
 
@@ -173,9 +218,10 @@
 
         <h3>Alternative: Self-Contained Bookmarklet</h3>
         <p>Copy this code and manually create a bookmark with it (no external hosting needed):</p>
-        
+
         <div class="code-box" id="standalone-code">
-            <button onclick="copyStandaloneCode()" style="float: right; padding: 5px 10px; cursor: pointer;">Copy</button>
+            <button onclick="copyStandaloneCode()"
+                style="float: right; padding: 5px 10px; cursor: pointer;">Copy</button>
             <div style="clear: both;"></div>
             Loading...
         </div>
@@ -204,7 +250,17 @@
         </div>
 
         <div class="note">
-            <strong>💡 Manual Installation:</strong> Right-click your bookmarks bar → "Add page/bookmark" → Paste the code above as the URL
+            <strong>💡 Manual Installation (Required for Safari):</strong>
+            <ol style="margin: 10px 0; padding-left: 20px;">
+                <li>Click the <strong>Copy button</strong> above to copy the bookmarklet code</li>
+                <li><strong>Right-click your bookmarks/favorites bar</strong> → Select "Add Bookmark" or "Add Page"</li>
+                <li><strong>Name it:</strong> "Component Overlay" (or any name you prefer)</li>
+                <li><strong>URL/Address:</strong> Paste the entire JavaScript code (starts with
+                    <code>javascript:(function(){...</code>)</li>
+                <li><strong>Save</strong> and you're done!</li>
+            </ol>
+            <p style="margin-top: 10px;"><strong>⚠️ Safari Users:</strong> This is the ONLY method that works reliably
+                on Safari.</p>
         </div>
     </div>
 
@@ -225,4 +281,5 @@
         }
     </script>
 </body>
+
 </html>
