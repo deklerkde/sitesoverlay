@@ -153,13 +153,19 @@
         while (node) {
             if (node.nodeType === 8) { // Node.COMMENT_NODE
                 const commentText = node.nodeValue.trim();
-                // Look for meaningful comments (exclude very short ones and system comments)
+                const lowerComment = commentText.toLowerCase();
+
+                // Look for meaningful comments (exclude system comments, .dwc files, and card-level comments)
                 if (commentText && commentText.length > 3 &&
                     !commentText.includes('---') &&
-                    !commentText.toLowerCase().includes('google tag manager') &&
-                    !commentText.toLowerCase().includes('end google') &&
-                    !commentText.toLowerCase().startsWith('adslot') &&
-                    !commentText.startsWith('/')) {
+                    !lowerComment.includes('google tag manager') &&
+                    !lowerComment.includes('end google') &&
+                    !lowerComment.startsWith('adslot') &&
+                    !commentText.startsWith('/') &&
+                    !commentText.endsWith('.dwc') &&
+                    !lowerComment.includes('.dwc ') &&
+                    !lowerComment.includes('small thumb') &&
+                    !lowerComment.includes('medium thumb')) {
 
                     // Find the next meaningful element sibling (skip text nodes, link tags, script tags)
                     let nextNode = node.nextSibling;
