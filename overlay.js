@@ -199,9 +199,12 @@
         }
     }
 
-    // Collect all comment-preceded elements
+    // Collect all comment-preceded elements - only within RHS column
+    const rhsCol = document.querySelector('.tf-rhs-col');
     const commentedElements = [];
-    walkTreeForComments(document.body, commentedElements);
+    if (rhsCol) {
+        walkTreeForComments(rhsCol, commentedElements);
+    }
 
     // Create overlays for comment-preceded elements
     commentedElements.forEach(function (item) {
@@ -215,7 +218,7 @@
         }
     });
 
-    // 4b. RHS widget class selectors - comprehensive coverage
+    // 4b. RHS widget class selectors - comprehensive coverage (only within RHS column)
     const rhsComponents = [
         { selector: '.most-read-widget', label: 'Most Read Widget', color: '#00cc66' },
         { selector: '.vote-widget', label: 'Vote Widget', color: '#00cc66' },
@@ -230,15 +233,18 @@
     ];
 
     rhsComponents.forEach(function (item) {
-        document.querySelectorAll(item.selector).forEach(function (el, idx) {
-            if (!marked.has(el)) {
-                const finalLabel = document.querySelectorAll(item.selector).length > 1
-                    ? item.label + ' ' + (idx + 1)
-                    : item.label;
-                createGhost(el, finalLabel, item.color, 'solid', 'data-overlay-widgets');
-                marked.add(el);
-            }
-        });
+        if (rhsCol) {
+            rhsCol.querySelectorAll(item.selector).forEach(function (el, idx) {
+                if (!marked.has(el)) {
+                    const rhsMatches = rhsCol.querySelectorAll(item.selector);
+                    const finalLabel = rhsMatches.length > 1
+                        ? item.label + ' ' + (idx + 1)
+                        : item.label;
+                    createGhost(el, finalLabel, item.color, 'solid', 'data-overlay-widgets');
+                    marked.add(el);
+                }
+            });
+        }
     });
 
     // 5. Ad Slots
