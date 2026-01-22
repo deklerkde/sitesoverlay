@@ -145,7 +145,7 @@
         });
     });
 
-    // 4. RHS Components - Find all elements preceded by significant HTML comments
+    // 4. LHS & RHS Components - Find all elements preceded by significant HTML comments
     // Walk the tree to find commented elements throughout the document
     function walkTreeForComments(parentNode, elementsWithComments) {
         let node = parentNode.firstChild;
@@ -158,11 +158,19 @@
                     !commentText.includes('---') &&
                     !commentText.toLowerCase().includes('google tag manager') &&
                     !commentText.toLowerCase().includes('end google') &&
-                    !commentText.toLowerCase().startsWith('adslot')) {
+                    !commentText.toLowerCase().startsWith('adslot') &&
+                    !commentText.startsWith('/')) {
 
-                    // Find the next element sibling (skip text nodes)
+                    // Find the next meaningful element sibling (skip text nodes, link tags, script tags)
                     let nextNode = node.nextSibling;
-                    while (nextNode && nextNode.nodeType !== 1) { // Node.ELEMENT_NODE
+                    while (nextNode) {
+                        if (nextNode.nodeType === 1) { // Node.ELEMENT_NODE
+                            const tagName = nextNode.tagName.toLowerCase();
+                            // Skip link and script tags, look for actual content elements
+                            if (tagName !== 'link' && tagName !== 'script' && tagName !== 'style') {
+                                break;
+                            }
+                        }
                         nextNode = nextNode.nextSibling;
                     }
 
