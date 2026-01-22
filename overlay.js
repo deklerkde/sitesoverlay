@@ -345,6 +345,15 @@
         });
     });
 
+    // Update stage height to account for full document height
+    stage.style.height = Math.max(
+        document.body.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.clientHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
+    ) + 'px';
+
     console.log('✅ Component overlays created successfully');
     console.log('📊 Components marked: ' + marked.size);
 })();
