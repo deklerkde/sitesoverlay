@@ -19,7 +19,12 @@
 
     // Helper function to create ghost overlay
     function createGhost(el, label, color, borderStyle, overlayAttr) {
+        // Force a reflow to ensure accurate measurements
+        void el.offsetHeight;
+
         const rect = el.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
         // Skip if element is not visible
         if (rect.width === 0 && rect.height === 0) return;
@@ -31,8 +36,8 @@
 
         Object.assign(ghost.style, {
             position: 'absolute',
-            top: (rect.top + window.scrollY) + 'px',
-            left: (rect.left + window.scrollX) + 'px',
+            top: (rect.top + scrollTop) + 'px',
+            left: (rect.left + scrollLeft) + 'px',
             width: rect.width + 'px',
             height: rect.height + 'px',
             border: '3px ' + borderStyle + ' ' + color,
@@ -58,6 +63,8 @@
 
         ghost.appendChild(labelDiv);
         stage.appendChild(ghost);
+
+        return ghost;
     }
 
     // Track what we've already marked to avoid duplicates
@@ -358,13 +365,64 @@
     });
 
     // Update stage height to account for full document height
-    stage.style.height = Math.max(
-        document.body.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.clientHeight,
-        document.documentElement.scrollHeight,
-        document.documentElement.offsetHeight
-    ) + 'px';
+    function updateStageHeight() {
+        stage.style.height = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        ) + 'px';
+    }
+
+    updateStageHeight();
+
+    // Recalculate overlay positions after images and ads load
+    setTimeout(function () {
+        // Update all ghost positions
+        const ghosts = stage.querySelectorAll('div[data-overlay-layout], div[data-overlay-article], div[data-overlay-cards], div[data-overlay-widgets], div[data-overlay-ads]');
+
+        ghosts.forEach(function (ghost) {
+            // Find the original element by comparing stored data
+            const originalLabel = ghost.querySelector('div').innerText;
+
+            // Skip if already removed
+            if (!ghost.parentNode) return;
+
+            // Get all elements and find the matching one
+            let foundElement = null;
+            marked.forEach(function (el) {
+                const rect = el.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    const currentTop = parseFloat(ghost.style.top);
+                    const currentLeft = parseFloat(ghost.style.left);
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+                    const elTop = rect.top + scrollTop;
+                    const elLeft = rect.left + scrollLeft;
+
+                    // Check if this is roughly the same element (within 50px tolerance)
+                    if (Math.abs(currentTop - elTop) < 50 && Math.abs(currentLeft - elLeft) < 50) {
+                        foundElement = el;
+                    }
+                }
+            });
+
+            if (foundElement) {
+                const rect = foundElement.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+                ghost.style.top = (rect.top + scrollTop) + 'px';
+                ghost.style.left = (rect.left + scrollLeft) + 'px';
+                ghost.style.width = rect.width + 'px';
+                ghost.style.height = rect.height + 'px';
+            }
+        });
+
+        updateStageHeight();
+        console.log('🔄 Overlay positions recalculated');
+    }, 500);
 
     console.log('✅ Component overlays created successfully');
     console.log('📊 Components marked: ' + marked.size);
